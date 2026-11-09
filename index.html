@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INMIDIA AI Academy</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+ font-family:Arial,sans-serif;
+ background:#fff8f1;color:#252525;
+ min-height:100vh;
+}
+header{
+ background:white;padding:18px 7%;
+ display:flex;justify-content:space-between;
+ align-items:center;box-shadow:0 3px 18px #0000000c;
+}
+.logo{font-size:25px;font-weight:900;color:#ff6500}
+.logo span{color:#252525}
+.container{
+ max-width:1050px;margin:45px auto;padding:20px;
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:35px;align-items:center;
+}
+.hero h1{font-size:42px;line-height:1.2;margin-bottom:18px}
+.hero h1 span{color:#ff6500}
+.hero p{font-size:17px;line-height:1.7;color:#666}
+.hero img{width:100%;border-radius:22px;margin-top:25px}
+.panel{
+ background:white;padding:32px;border-radius:22px;
+ box-shadow:0 10px 40px #ff650018;
+ border:1px solid #ffe5d2;
+}
+.panel h2{font-size:27px;margin-bottom:10px}
+.sub{color:#777;margin-bottom:24px;line-height:1.5}
+label{display:block;margin:15px 0 7px;font-weight:bold}
+input{
+ width:100%;padding:14px;border:1px solid #ddd;
+ border-radius:10px;font-size:15px;outline:none;
+}
+input:focus{border-color:#ff6500}
+button{
+ width:100%;padding:15px;border:0;border-radius:10px;
+ background:#ff6500;color:white;font-weight:bold;
+ font-size:16px;cursor:pointer;margin-top:18px;
+}
+button:hover{background:#e95700}
+.switch{text-align:center;margin-top:20px;color:#666}
+.switch a{color:#ff6500;font-weight:bold;cursor:pointer}
+#message{margin-top:15px;line-height:1.5;font-size:14px}
+.hidden{display:none!important}
+.dashboard{
+ max-width:1000px;margin:40px auto;padding:20px;
+}
+.welcome{
+ background:linear-gradient(120deg,#ff6500,#ffad00);
+ color:white;padding:35px;border-radius:20px;
+}
+.cards{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:18px;margin-top:25px;
+}
+.card{
+ background:white;padding:25px;border-radius:16px;
+ border:1px solid #ffe5d2;
+}
+.card h3{color:#ff6500;margin-bottom:10px}
+footer{text-align:center;padding:30px;color:#888}
+@media(max-width:750px){
+ .container{grid-template-columns:1fr;margin:15px auto}
+ .hero h1{font-size:32px}
+ .cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header>
+ <div class="logo">INMIDIA<span> AI ACADEMY</span></div>
+</header>
+
+<main id="authSection" class="container">
+
+ <section class="hero">
+  <h1>भविष्य की तकनीक सीखें <span>आज से!</span></h1>
+  <p>
+   AI, Python, Machine Learning और आधुनिक तकनीकों
+   की पढ़ाई शुरू करें। अपनी गति से सीखें और नए
+   प्रोजेक्ट बनाना सीखें।
+  </p>
+  <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900"
+       alt="Students learning technology">
+ </section>
+
+ <section class="panel">
+  <div id="registerBox">
+   <h2>नया अकाउंट बनाएँ</h2>
+   <p class="sub">INMIDIA AI Academy में आपका स्वागत है।</p>
+
+   <label>विद्यार्थी का पूरा नाम</label>
+   <input id="name" type="text" placeholder="अपना नाम लिखें">
+
+   <label>Gmail Address</label>
+   <input id="registerEmail" type="email" placeholder="example@gmail.com">
+
+   <button id="registerBtn">Registration करें</button>
+
+   <p class="switch">पहले से अकाउंट है?
+    <a onclick="showLogin()">Login करें</a>
+   </p>
+  </div>
+
+  <div id="loginBox" class="hidden">
+   <h2>Student Login</h2>
+   <p class="sub">अपने अकाउंट में सुरक्षित प्रवेश करें।</p>
+
+   <label>Gmail Address</label>
+   <input id="loginEmail" type="email" placeholder="example@gmail.com">
+
+   <button id="loginBtn">Login Link भेजें</button>
+
+   <p class="switch">नया विद्यार्थी हैं?
+    <a onclick="showRegister()">Registration करें</a>
+   </p>
+  </div>
+
+  <div id="message" role="status"></div>
+ </section>
+</main>
+
+<section id="dashboard" class="dashboard hidden">
+ <div class="welcome">
+  <h1>Welcome to INMIDIA AI Academy!</h1>
+  <p id="studentName">Student Dashboard</p>
+  <p id="studentId"></p>
+ </div>
+
+ <div class="cards">
+  <div class="card">
+   <h3>My Courses</h3>
+   <p>तुम्हारे कोर्स यहाँ दिखाई देंगे।</p>
+  </div>
+  <div class="card">
+   <h3>My Progress</h3>
+   <p>तुम्हारी पढ़ाई की प्रगति यहाँ दिखेगी।</p>
+  </div>
+  <div class="card">
+   <h3>My Certificates</h3>
+   <p>जारी किए गए सर्टिफिकेट यहाँ दिखेंगे।</p>
+  </div>
+ </div>
+
+ <button id="logoutBtn" style="max-width:200px">Logout</button>
+</section>
+
+<footer>© 2026 INMIDIA AI Academy. All Rights Reserved.</footer>
+
+<script>
+const SUPABASE_URL = "https://nierwigcazvnpmwgowqc.supabase.co";
+const SUPABASE_KEY = "sb_publishable_XQjA3qFsTmE8X0pkaGqjIA_z8Q58-4X";
+
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+const message = document.getElementById("message");
+
+function showRegister(){
+ document.getElementById("registerBox").classList.remove("hidden");
+ document.getElementById("loginBox").classList.add("hidden");
+ message.textContent="";
+}
+
+function showLogin(){
+ document.getElementById("loginBox").classList.remove("hidden");
+ document.getElementById("registerBox").classList.add("hidden");
+ message.textContent="";
+}
+
+async function sendLink(email, fullName=""){
+ if(!email || !email.includes("@")){
+  message.textContent="कृपया सही Gmail Address लिखें।";
+  return;
+ }
+
+ message.textContent="ईमेल भेजा जा रहा है...";
+
+ const {error}=await db.auth.signInWithOtp({
+  email:email,
+  options:{
+   emailRedirectTo:window.location.origin,
+   data: fullName ? {full_name:fullName} : undefined
+  }
+ });
+
+ if(error){
+  message.textContent="त्रुटि: "+error.message;
+ }else{
+  message.textContent=
+   "Login Link भेज दिया गया है। अपना Email Inbox खोलकर लिंक पर क्लिक करें।";
+ }
+}
+
+document.getElementById("registerBtn").onclick=()=>{
+ const name=document.getElementById("name").value.trim();
+ const email=document.getElementById("registerEmail").value.trim();
+
+ if(!name){
+  message.textContent="अपना पूरा नाम लिखें।";
+  return;
+ }
+ sendLink(email,name);
+};
+
+document.getElementById("loginBtn").onclick=()=>{
+ const email=document.getElementById("loginEmail").value.trim();
+ sendLink(email);
+};
+
+async function loadDashboard(user){
+ document.getElementById("authSection").classList.add("hidden");
+ document.getElementById("dashboard").classList.remove("hidden");
+
+ let {data:profile,error}=await db
+  .from("student_profiles")
+  .select("*")
+  .eq("id",user.id)
+  .maybeSingle();
+
+ if(!profile && !error){
+  const fullName=user.user_metadata?.full_name || "Student";
+
+  const result=await db
+   .from("student_profiles")
+   .insert({id:user.id,full_name:fullName})
+   .select()
+   .single();
+
+  profile=result.data;
+ }
+
+ document.getElementById("studentName").textContent=
+  profile?.full_name || user.email;
+
+ document.getElementById("studentId").textContent=
+  profile?.student_id ? "Student ID: "+profile.student_id :
+  "Student ID अभी उपलब्ध नहीं है";
+}
+
+async function checkSession(){
+ const {data}=await db.auth.getSession();
+ if(data.session){
+  await loadDashboard(data.session.user);
+ }
+}
+
+db.auth.onAuthStateChange((event,session)=>{
+ if(session){
+  setTimeout(()=>loadDashboard(session.user),0);
+ }
+});
+
+document.getElementById("logoutBtn").onclick=async()=>{
+ await db.auth.signOut();
+ location.reload();
+};
+
+checkSession();
+</script>
+</body>
+</html>
